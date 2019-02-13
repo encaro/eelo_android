@@ -23,7 +23,7 @@ before_script:
     variables:
       - $CI_COMMIT_REF_NAME == $LOCAL_BRANCH
   variables:
-    GIT_STRATEGY: fetch
+    GIT_STRATEGY: clone
   script:
     - git remote set-url origin $CI_PROJECT_SSH_URL
     - git checkout $CI_COMMIT_REF_NAME
