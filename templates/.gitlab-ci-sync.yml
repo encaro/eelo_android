@@ -1,0 +1,43 @@
+
+image: registry.gitlab.e.foundation:5000/e/tools/docker-tools:latest
+
+variables:
+  CI_PROJECT_SSH_URL: ssh://git@gitlab.e.foundation:2222/$CI_PROJECT_PATH
+
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "${SSH_KNOWN_HOSTS}" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - git config --global user.email $GITLAB_USER_EMAIL
+  - git config --global user.name $GITLAB_USER_NAME
+
+.update from upstream:
+  stage: update-from-upstream
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CI_COMMIT_REF_NAME == $LOCAL_BRANCH
+  variables:
+    GIT_STRATEGY: fetch
+  script:
+    - git remote set-url origin $CI_PROJECT_SSH_URL
+    - git checkout $CI_COMMIT_REF_NAME
+    - git merge origin/$UPSTREAM_BRANCH
+    - git push
+
+nougat:
+  extends: .update from upstream
+  variables:
+    UPSTREAM_BRANCH: cm-14.1
+    LOCAL_BRANCH: v1-nougat
+
+oreo:
+  extends: .update from upstream
+  variables:
+    UPSTREAM_BRANCH: lineage-15.1
+    LOCAL_BRANCH: v1-oreo
