@@ -22,6 +22,21 @@
            sync-c="true"
            sync-j="4" />
 
+  <remote  name="omnirom"
+           review="gerrit.omnirom.org"
+           fetch="https://github.com/omnirom" />
+
+  <remote  name="bb"
+           fetch="https://bitbucket.org/" />
+
+  <remote  name="substratum"
+           fetch="https://github.com/"
+           review="http://substratum.review" />
+
+  <remote  name="chrono"
+           fetch="https://github.com/ChronoMonochrome"
+           revision="refs/heads/master" />
+
   <!-- AOSP Projects -->
 
   <project path="build/make" name="e/os/android_build" groups="pdk" remote="e" >
