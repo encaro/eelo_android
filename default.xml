@@ -2,7 +2,7 @@
 <manifest>
 
   <remote  name="e"
-           fetch="../../.."
+           fetch="https://gitlab.e.foundation"
            revision="v1-oreo"/>
 
   <remote  name="github"
